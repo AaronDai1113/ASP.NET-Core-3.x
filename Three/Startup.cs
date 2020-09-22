@@ -19,6 +19,8 @@ namespace Three
         {
             services.AddControllersWithViews();
             services.AddSingleton<IClock, ChinaClock>();
+            services.AddSingleton<IDepartmentService, DepartmentService>();
+            services.AddSingleton<IEmployeeService, EmployeeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

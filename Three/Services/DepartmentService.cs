@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Three.Models;
 
@@ -35,12 +37,28 @@ namespace Three.Services
         }
         public Task<IEnumerable<Department>> GetAll()
         {
-            throw new NotImplementedException();
+            return Task.Run(() => _department.AsEnumerable());
         }
 
         public Task<Department> GetById(int id)
         {
-            throw new NotImplementedException();
+            return Task.Run(() => _department.FirstOrDefault(x => x.Id == id));
+        }
+        public Task<CompanySummary> GetCompanySummary() {
+            return Task.Run(() =>
+            {
+                return new CompanySummary
+                {
+                    EmployeeCount = _department.Sum(x => x.EmployeeCount),
+                    AverageDepartmentEmployeeCount=(int)_department.Average(x=>x.EmployeeCount)
+                };
+            });                
+        }
+        public Task Add(Department department)
+        {
+            department.Id = _department.Max(x => x.Id) + 1;
+            _department.Add(department);
+            return Task.CompletedTask;
         }
     }
 }
