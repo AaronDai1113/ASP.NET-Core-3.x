@@ -10,6 +10,7 @@ namespace Three.Services
     {
         Task<IEnumerable<Department>> GetAll();
         Task<Department> GetById(int id);
-        
+        Task<CompanySummary> GetCompanySummary();
+        Task Add(Department department);
     }
 }

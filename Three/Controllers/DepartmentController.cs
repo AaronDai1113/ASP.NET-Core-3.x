@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Three.Models;
 using Three.Services;
 
 namespace Three.Controllers
@@ -18,7 +19,23 @@ namespace Three.Controllers
         public async Task<IActionResult> Index()
         {
             ViewBag.Title = "Depart Index";
-            return View();
+            var departments = _departmentService.GetAll();
+            return View(departments);
         }
+        public IActionResult Add()
+        {
+            ViewBag.Title = "Add Department";
+            return View(new Department());
+        }
+        [HttpPost]
+        public async Task<IActionResult> Add(Department model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _departmentService.Add(model);
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }
